@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,7 +21,7 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class, [
+            ->add('name', TextType::class, [
                 "label" => "Nom du produit"
             ])
             ->add('excerpt', TextareaType::class, [
@@ -32,10 +33,10 @@ class ProductType extends AbstractType
                     "class" => ""
                 ]
             ])
-            ->add('description', TextareaType::class, [
+            ->add('description', CKEditorType::class, [
                 "label" => "Description",
-                "attr" => [
-                    "class" => ""
+                "config" => [
+                    'uiColor' => '#ffffff',
                 ]
             ])
             ->add('image', TextType::class, [
@@ -73,8 +74,7 @@ class ProductType extends AbstractType
                 "class" => Brand::class,
                 "label" => "Marque",
                 "choice_label" => "name"
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
