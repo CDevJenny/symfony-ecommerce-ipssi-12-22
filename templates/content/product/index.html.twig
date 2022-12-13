@@ -8,6 +8,7 @@
 		{% for product in products %}
 			{% include "content/product/includes/card.html.twig" %}
 		{% endfor %}
+		{{ knp_pagination_render(products) }}
 	</div>
 	<a href="{{ path('app_product_create') }}">Create new</a>
 {% endblock %}

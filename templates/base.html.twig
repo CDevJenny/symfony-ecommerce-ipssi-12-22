@@ -27,7 +27,7 @@
 				</div>
 				<div class="user-content">
 					{% if app.user %}
-						<a href="">Profil</a>
+						<a href="{{ path('app_profile', {'id': app.user.id}) }}">Profil</a>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>
 					{% else %}
 						<a href="{{ path('app_login') }}">Connexion</a>

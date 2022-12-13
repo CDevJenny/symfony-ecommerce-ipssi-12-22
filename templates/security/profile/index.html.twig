@@ -20,6 +20,10 @@
 					</span>
 					{{ user.email }}</p>
 				<p>
+					<span class="user-label">Pays
+					</span>
+					{{ user.country }}</p>
+				<p>
 					<span class="user-label">Adresse
 					</span>
 					{{ user.address }}</p>
@@ -33,15 +37,15 @@
 					{{ user.phoneNumber }}</p>
 			</div>
 			<div class="user-actions">
-				<a href="">Modifier mes informations</a>
+				<a href="{{ path('app_user_update', {'id': app.user.id}) }}">Modifier mes informations</a>
 				<a href="">Modifier mon mot de passe</a>
 			</div>
 		</div>
 		<div class="user-products">
-			{% set products = user.products %}
 			{% for product in products %}
 				{% include "content/product/includes/card.html.twig" %}
 			{% endfor %}
+			{{ knp_pagination_render(products) }}
 		</div>
 	</div>
 {% endblock %}
