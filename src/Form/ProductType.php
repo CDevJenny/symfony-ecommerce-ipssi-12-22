@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\Product;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,13 +24,10 @@ class ProductType extends AbstractType
             ->add('name', TextType::class, [
                 "label" => "Nom du produit"
             ])
-            ->add('excerpt', TextareaType::class, [
+            ->add('excerpt', CKEditorType::class, [
                 "label" => "Résumé",
-                "label_attr" => [
-                    "class" => "test"
-                ],
-                "attr" => [
-                    "class" => ""
+                "config" => [
+                    'uiColor' => '#ffffff',
                 ]
             ])
             ->add('description', CKEditorType::class, [
