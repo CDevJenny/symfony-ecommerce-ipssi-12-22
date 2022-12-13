@@ -25,6 +25,9 @@ class ProductType extends AbstractType
             ])
             ->add('excerpt', TextareaType::class, [
                 "label" => "Résumé",
+                "label_attr" => [
+                    "class" => "test"
+                ],
                 "attr" => [
                     "class" => ""
                 ]

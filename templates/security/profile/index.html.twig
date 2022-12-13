@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+
+{% block body %}
+	<div class="profile-container container">
+		<div class="user-infos">
+			<div class="infos">
+				<p>
+					<span class="user-label">Nom
+					</span>
+					{{ user.lastname }}</p>
+				<p>
+					<span class="user-label">Prénom
+					</span>
+					{{ user.firstname }}</p>
+				<p>
+					<span class="user-label">Email
+					</span>
+					{{ user.email }}</p>
+				<p>
+					<span class="user-label">Adresse
+					</span>
+					{{ user.address }}</p>
+				<p>
+					<span class="user-label">Code Postal
+					</span>
+					{{ user.postalCode }}</p>
+				<p>
+					<span class="user-label">Numéro de téléphone
+					</span>
+					{{ user.phoneNumber }}</p>
+			</div>
+			<div class="user-actions">
+				<a href="">Modifier mes informations</a>
+				<a href="">Modifier mon mot de passe</a>
+			</div>
+		</div>
+		<div class="user-products">
+			{% set products = user.products %}
+			{% for product in products %}
+				{% include "content/product/includes/card.html.twig" %}
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

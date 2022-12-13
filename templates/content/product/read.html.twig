@@ -1,62 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}Product
+{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
-            </tr>
-            <tr>
-                <th>Excerpt</th>
-                <td>{{ product.excerpt }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ product.image }}</td>
-            </tr>
-            <tr>
-                <th>Quantity</th>
-                <td>{{ product.quantity }}</td>
-            </tr>
-            <tr>
-                <th>Sold</th>
-                <td>{{ product.sold }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ product.status }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_products') }}">back to list</a>
-
-    <a href="{{ path('app_product_update', {'id': product.id}) }}">edit</a>
-
-    {{ include('content/product/_delete_form.html.twig') }}
+	<div class="container">
+		<div class="product-single-container">
+			<h3>
+				{{ product.name }}
+			</h3>
+			<p class="tag-block">
+				<span class="tag">{{ product.category.name }}</span>
+				<span class="tag">{{ product.brand.name }}</span>
+			</p>
+			<div class="product-infos">
+				<img src="{{ product.image }}" alt="{{ product.name }}" width="300px">
+				<p>
+					{{ product.description }}
+				</p>
+			</div>
+			<span class="product-price">
+				{{ product.price }}
+				€
+			</span>
+			<div class="product-status">
+				{% if product.status == 2 %}
+					<span class="product-status-available">
+						<div class="circle green"></div>Disponible</span>
+				{% elseif product.status == 1 %}
+					<span class="product-status-unavailable">
+						<div class="circle orange"></div>Indisponible</span>
+				{% endif %}
+				<span class="product-quantity">
+					En stock
+					{{ product.quantity }}
+				</span>
+			</div>
+			<h4>
+				<span style="font-weight:lighter;">Vendu par</span>
+				{{ product.seller.firstname }}
+				{{ product.seller.lastname }}</h4>
+			<div class="actions">
+				<a href="{{ path('app_products') }}">Retour aux produits</a>
+				<a href="{{ path('app_products') }}" class="action-cart">Ajouter au panier</a>
+			</div>
+		</div>
+	</div>
 {% endblock %}

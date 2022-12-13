@@ -1,3 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins&family=Roboto&display=swap');
+
+/*
+font-family: 'Anton', sans-serif;
+font-family: 'Poppins', sans-serif;
+font-family: 'Roboto', sans-serif;
+*/
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
 body {
-    background-color: lightgray;
+    width: 100%;
+    background: url('https://m.media-amazon.com/images/I/81KOypwg40L.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+header {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    box-shadow: 0 2px 10px 2px gray;
+}
+
+header nav {
+    height: 50px;
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .img {
+    height: 50px;
+    width: 120px;
+    background: url('https://assets.stickpng.com/images/580b57fcd9996e24bc43c1e8.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.nav-content a,
+.user-content a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.nav-content a {
+    color: black;
+}
+
+.nav-content a:hover {
+    color: blue;
+}
+
+.nav-content,
+.user-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-content {
+    width: 300px;
+}
+
+.user-content {
+    width: 200px;
+}
+
+.user-content a {
+    color: red;
+}
+
+main {
+    width: 900px;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 2px 10px 2px gray;
+}
+
+.container {
+    margin-top: 80px;
+}
+
+.products-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: white;
+}
+
+.product-container {
+    width: 260px;
+    height: 380px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.product-container h3,
+.product-single-container h3 {
+    margin-top: 20px;
+    text-transform: capitalize;
+    font-family: 'Anton', sans-serif;
+}
+
+.product-container p,
+.product-single-container p {
+    font-size: 14px;
+    font-weight: lighter;
+    padding: 0 10px;
+}
+
+.product-status-available,
+.product-status-unavailable {
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.product-status-available {
+    color: green;
+}
+
+.product-status-unavailable {
+    color: orange;
+}
+
+.product-price {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.product-status {
+    width: 180px;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-quantity {
+    font-weight: lighter;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.product-container a,
+.product-single-container a,
+.profile-container a {
+    padding: 10px 45px;
+    margin-bottom: 10px;
+    background-color: blue;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+}
+
+.product-container a:hover {
+    background-color: red;
+}
+
+.product-container:hover {
+    box-shadow: 0 2px 10px 2px gray;
+}
+
+.product-single-container {
+    width: 90%;
+    min-height: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-infos {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.actions {
+    width: 600px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.actions .action-cart {
+    background-color: red;
+}
+
+.tag {
+    padding: 5px 6px;
+    font-size: 9px;
+    border-radius: 4px;
+    background-color: lightblue;
+    box-shadow: 0 2px 6px 2px gray;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.circle {
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+    border: solid 0.5px lightgrey;
+    box-shadow: 0 1px 4px 1px gray;
+    margin-right: 4px;
+}
+
+.green {
+    background-color: green;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.home-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 400px;
+    width: 100%;
+}
+
+.tag-block {
+    width: 110px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.user-infos {
+    margin-top: 55px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.user-infos p {
+    font-style: italic;
+}
+
+.user-label {
+    font-weight: bold;
+    font-style: normal;
+    font-family: 'Poppins', sans-serif;
+}
+
+.user-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    width: 100%;
+}
+
+.user-products {
+    width: 540px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+form {
+    width: 700px;
+    margin: 0 auto;
+}
+
+form input {
+    height: 40px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+}
+
+form input:focus {
+    border-bottom: 2px solid blue;
+    background-color: rgba(0, 0, 0, 0.1);
 }

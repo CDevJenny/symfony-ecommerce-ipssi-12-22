@@ -39,28 +39,37 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findWithFilters(int $limit, $seller = null, $category = null, $brand = null): array
+    {
+        $qb = $this->createQueryBuilder('p');
 
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($seller) {
+            $qb->andWhere('p.seller = :seller')
+                ->setParameter('seller', $seller);
+        }
+        if ($category) {
+            $qb->andWhere('p.category = :category')
+                ->setParameter('category', $category);
+        }
+        if ($brand) {
+            $qb->andWhere('p.brand = :brand')
+                ->setParameter('brand', $brand);
+        }
+        $qb->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+    //    public function findOneBySomeField($value): ?Product
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

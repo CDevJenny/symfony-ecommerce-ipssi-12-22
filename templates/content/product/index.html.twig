@@ -1,53 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Product index
+{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Excerpt</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Quantity</th>
-                <th>Sold</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.excerpt }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.image }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.sold }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.status }}</td>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_product_read', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('app_product_update', {'id': product.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_product_create') }}">Create new</a>
+	<div class="products-container container">
+		{% for product in products %}
+			{% include "content/product/includes/card.html.twig" %}
+		{% endfor %}
+	</div>
+	<a href="{{ path('app_product_create') }}">Create new</a>
 {% endblock %}

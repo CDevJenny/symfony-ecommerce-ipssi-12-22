@@ -47,7 +47,7 @@ class AppFixtures extends Fixture
             $product->setQuantity(mt_rand(1, 15));
             $product->setSold(mt_rand(1, 5));
             $product->setPrice(mt_rand(10, 100));
-            $product->setStatus(1);
+            $product->setStatus(mt_rand(1, 2));
             $product->setSeller($user);
             $product->setBrand($brand);
             $product->setCategory($category);
