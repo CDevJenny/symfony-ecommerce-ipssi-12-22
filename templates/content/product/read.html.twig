@@ -40,9 +40,10 @@
 				<span style="font-weight:lighter;">Vendu par</span>
 				{{ product.seller.firstname }}
 				{{ product.seller.lastname }}</h4>
+			{{ include('content/_form.html.twig', {'button_label': 'Acheter'}) }}
 			<div class="actions">
 				<a href="{{ path('app_products') }}">Retour aux produits</a>
-				<a href="{{ path('app_products') }}" class="action-cart">Ajouter au panier</a>
+				<a href="{{ path('app_product_add', {'id': product.id}) }}" class="action-cart">Ajouter au panier</a>
 			</div>
 		</div>
 	</div>

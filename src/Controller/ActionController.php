@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use DateTimeImmutable;
 use App\Entity\Product;
 use App\Form\ProductType;
-use App\Repository\ProductRepository;
-use DateTimeImmutable;
+use App\Entity\CartsProducts;
 use Doctrine\ORM\Mapping\Entity;
+use App\Repository\ProductRepository;
 use Doctrine\Persistence\ObjectRepository;
+use App\Repository\CartsProductsRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,8 +59,33 @@ class ActionController extends AbstractController
     #[Route('/product/delete/{id}', name: 'app_product_delete', methods: ['POST'])]
     public function deleteProduct(Request $request, Product $product, ProductRepository $productRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             $productRepository->remove($product, true);
+        }
+
+        return $this->redirectToRoute('app_products', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/product/add/{id}', name: 'app_product_add', methods: ['GET', 'POST'])]
+    public function addProductToCart(Request $request, Product $product, CartsProductsRepository $cpRepository): Response
+    {
+        /** @var User $user **/
+        $user = $this->getUser();
+        $cart = $user->getCart();
+        $cp = $cart->getCartsProducts()->toArray();
+        //dd($cp);
+        //$q = $cp[0]->getQuantity();
+        foreach ($cp as $cProduct) {
+            if ($cProduct->getProduct()->getId() == $product->getId()) {
+                $q = $cProduct->getQuantity();
+                $cProduct->setQuantity($q + 1);
+            } else {
+                $cProduct = new CartsProducts();
+                $cProduct->setCart($cart);
+                $cProduct->setProduct($product);
+                $cProduct->setQuantity(1);
+            }
+            $cpRepository->save($cProduct, true);
         }
 
         return $this->redirectToRoute('app_products', [], Response::HTTP_SEE_OTHER);

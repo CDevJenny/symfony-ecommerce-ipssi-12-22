@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\UserPasswordType;
 use DateTimeImmutable;
@@ -29,8 +30,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setCreatedAt(new DateTimeImmutable('now'));
+            $cart = new Cart();
+            $user->setCart($cart);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -78,6 +79,7 @@ class UserController extends AbstractController
     #[Route(path: '/profile/{id}', name: 'app_profile')]
     public function indexProfile(User $user, Request $request, PaginatorInterface $paginator)
     {
+        dd($user->getCart());
         $userProducts = $user->getProducts()->toArray();
 
         $products = $paginator->paginate(

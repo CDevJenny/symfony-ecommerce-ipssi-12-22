@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\CartsProducts;
 use App\Entity\Product;
+use App\Form\AddCartType;
+use App\Repository\CartsProductsRepository;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,11 +38,38 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{id}', name: 'app_product_read', methods: ['GET'])]
-    public function readProduct(Product $product): Response
+    #[Route('/product/{id}', name: 'app_product_read', methods: ['GET', 'POST'])]
+    public function readProduct(Request $request, Product $product, CartsProductsRepository $cpRepository): Response
     {
+        /** @var User $user **/
+        $user = $this->getUser();
+        $cart = $user->getCart();
+
+        $cartProduct = new CartsProducts();
+        $cp = $cart->getCartsProducts()->toArray();
+        $form = $this->createForm(AddCartType::class, $cartProduct);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($cp as $cProduct) {
+                if ($cProduct->getProduct()->getId() == $product->getId()) {
+                    $q = $cProduct->getQuantity();
+                    $quantity = $form->get('quantity')->getData();
+                    $cProduct->setQuantity($q + $quantity);
+                } else {
+                    $cProduct->setCart($cart);
+                    $quantity = $form->get('quantity')->getData();
+                    $cProduct->setProduct($product);
+                    $cProduct->setQuantity($quantity);
+                }
+                $cpRepository->save($cProduct, true);
+            }
+
+            return $this->redirectToRoute('app_products');
+        }
         return $this->render('content/product/read.html.twig', [
             'product' => $product,
+            'form' => $form->createView()
         ]);
     }
 }
