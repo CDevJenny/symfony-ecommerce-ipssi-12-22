@@ -6,6 +6,8 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +18,8 @@ class ActionController extends AbstractController
     #[Route('/product/create', name: 'app_product_create', methods: ['GET', 'POST'])]
     public function createProduct(Request $request, ProductRepository $productRepository): Response
     {
-        $product = new Product();
+        $test = Product::class;
+        $product = new $test();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
