@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block title %}Panier
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="cart-container">
+			{% for cartProduct in products %}
+				<div class="cart-product-container">
+					<img src="{{ cartProduct.product.image }}" alt="{{ cartProduct.product.name }}" height="80px">
+					<h3>{{ cartProduct.product.name }}</h3>
+					<p>{{ cartProduct.product.excerpt }}</p>
+					<p>x
+						{{ cartProduct.quantity }}</p>
+					<p style="font-weight:bold"></p>
+					<p>{{ cartProduct.product.price * cartProduct.quantity }} €</p>
+				</div>
+			{% endfor %}
+			<div class="cart-action-container">
+				<p><span>Prix total du panier : </span> {{ total }}</p>
+				<a href="{{ path('app_profile_checkout', {'id': app.user.id, 'total': total}) }}">Passer au paiement</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

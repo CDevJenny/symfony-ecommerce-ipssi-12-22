@@ -45,26 +45,34 @@ class ContentController extends AbstractController
         $user = $this->getUser();
         $cart = $user->getCart();
 
-        $cartProduct = new CartsProducts();
         $cp = $cart->getCartsProducts()->toArray();
-        $form = $this->createForm(AddCartType::class, $cartProduct);
+        $form = $this->createForm(AddCartType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($cp as $cProduct) {
-                if ($cProduct->getProduct()->getId() == $product->getId()) {
-                    $q = $cProduct->getQuantity();
-                    $quantity = $form->get('quantity')->getData();
-                    $cProduct->setQuantity($q + $quantity);
-                } else {
-                    $cProduct->setCart($cart);
-                    $quantity = $form->get('quantity')->getData();
-                    $cProduct->setProduct($product);
-                    $cProduct->setQuantity($quantity);
-                }
-                $cpRepository->save($cProduct, true);
-            }
+            $formQuantity = $form->get('quantity')->getData();
+            if (empty($cp)) {
+                $cProduct = new CartsProducts();
+                $cProduct->setCart($cart);
+                $cProduct->setProduct($product);
+                $cProduct->setQuantity($formQuantity);
+            } else {
+                foreach ($cp as $cProduct) {
+                    $cProductId = $cProduct->getProduct()->getId();
+                    if ($cProductId == $product->getId()) {
+                        $q = $cProduct->getQuantity();
+                        $cProduct->setQuantity($q + $formQuantity);
 
+                        break;
+                    } else {
+                        $cProduct = new CartsProducts();
+                        $cProduct->setCart($cart);
+                        $cProduct->setProduct($product);
+                        $cProduct->setQuantity($formQuantity);
+                    }
+                }
+            }
+            $cpRepository->save($cProduct, true);
             return $this->redirectToRoute('app_products');
         }
         return $this->render('content/product/read.html.twig', [

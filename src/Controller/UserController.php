@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use Error;
 use App\Entity\Cart;
 use App\Entity\User;
-use App\Form\UserPasswordType;
-use DateTimeImmutable;
 use App\Form\UserType;
+use DateTimeImmutable;
+use Stripe\StripeClient;
+use App\Form\UserPasswordType;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
@@ -79,7 +81,6 @@ class UserController extends AbstractController
     #[Route(path: '/profile/{id}', name: 'app_profile')]
     public function indexProfile(User $user, Request $request, PaginatorInterface $paginator)
     {
-        dd($user->getCart());
         $userProducts = $user->getProducts()->toArray();
 
         $products = $paginator->paginate(
@@ -130,5 +131,47 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
+    }
+
+    #[Route(path: '/profile/{id}/cart', name: 'app_profile_cart')]
+    public function readCart(User $user)
+    {
+        $cart = $user->getCart();
+        $products = $cart->getCartsProducts()->toArray();
+
+        $quantities = [];
+        foreach ($products as $product) {
+            array_push($quantities, $product->getQuantity() * $product->getProduct()->getPrice());
+        }
+        $totalPrice = array_sum($quantities);
+        return $this->render('security/profile/cart.html.twig', [
+            'user' => $user,
+            'products' => $products,
+            'total' => $totalPrice
+        ]);
+    }
+
+    #[Route('/profile/{id}/checkout={total}', name: 'app_profile_checkout')]
+    public function cartCheckout(Request $request, User $user, $total)
+    {
+        $currentUser = $this->getUser()->getId();
+        if ($currentUser !== $user->getId()) {
+            return $this->redirectToRoute('app_profile', ['id' => $currentUser]);
+        }
+
+        if ($request->getMethod() === 'POST') {
+            \Stripe\Stripe::setApiKey($this->getParameter('stripe_sk'));
+            \Stripe\PaymentIntent::create([
+                'amount' => $total,
+                'currency' => 'eur',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                ],
+                'source' => $request->request->get('stripeToken')
+            ]);
+        }
+
+
+        return $this->render('security/profile/checkout.html.twig');
     }
 }

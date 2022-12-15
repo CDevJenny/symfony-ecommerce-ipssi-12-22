@@ -7,9 +7,9 @@
 		<span class="tag">{{ product.brand.name }}</span>
 	</p>
 	<p>
-		{{ product.excerpt }}
+		{{ product.excerpt|raw }}
 	</p>
-	<img src="{{ product.image }}" alt="{{ product.name }}" width="150px">
+	<img src="{{ product.image }}" alt="{{ product.name }}" height="150px">
 	<span class="product-price">
 		{{ product.price }}
 		€

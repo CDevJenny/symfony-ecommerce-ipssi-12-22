@@ -21,14 +21,16 @@ class ActionController extends AbstractController
     public function createProduct(Request $request, ProductRepository $productRepository): Response
     {
         $test = Product::class;
+        $user = $this->getUser();
         $product = new $test();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $product->setSeller($user);
             $productRepository->save($product, true);
 
-            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_products', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('content/product/create.html.twig', [
@@ -73,21 +75,30 @@ class ActionController extends AbstractController
         $user = $this->getUser();
         $cart = $user->getCart();
         $cp = $cart->getCartsProducts()->toArray();
-        //dd($cp);
-        //$q = $cp[0]->getQuantity();
-        foreach ($cp as $cProduct) {
-            if ($cProduct->getProduct()->getId() == $product->getId()) {
-                $q = $cProduct->getQuantity();
-                $cProduct->setQuantity($q + 1);
-            } else {
-                $cProduct = new CartsProducts();
-                $cProduct->setCart($cart);
-                $cProduct->setProduct($product);
-                $cProduct->setQuantity(1);
-            }
-            $cpRepository->save($cProduct, true);
-        }
 
+
+        if (empty($cp)) {
+            $cProduct = new CartsProducts();
+            $cProduct->setCart($cart);
+            $cProduct->setProduct($product);
+            $cProduct->setQuantity(1);
+        } else {
+            foreach ($cp as $cProduct) {
+                $cProductId = $cProduct->getProduct()->getId();
+                if ($cProductId == $product->getId()) {
+                    $q = $cProduct->getQuantity();
+                    $cProduct->setQuantity($q + 1);
+
+                    break;
+                } else {
+                    $cProduct = new CartsProducts();
+                    $cProduct->setCart($cart);
+                    $cProduct->setProduct($product);
+                    $cProduct->setQuantity(1);
+                }
+            }
+        }
+        $cpRepository->save($cProduct, true);
         return $this->redirectToRoute('app_products', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -16,7 +16,7 @@
 			<div class="product-infos">
 				<img src="{{ product.image }}" alt="{{ product.name }}" width="300px">
 				<p>
-					{{ product.description }}
+					{{ product.description|raw }}
 				</p>
 			</div>
 			<span class="product-price">

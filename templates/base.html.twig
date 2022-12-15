@@ -6,6 +6,7 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
+		<script src="https://js.stripe.com/v3/"></script>
 		<link
 		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
@@ -28,6 +29,7 @@
 				<div class="user-content">
 					{% if app.user %}
 						<a href="{{ path('app_profile', {'id': app.user.id}) }}">Profil</a>
+						<a href="{{ path('app_profile_cart', {'id': app.user.id}) }}">Panier</a>
 						<a href="{{ path('app_logout') }}">Déconnexion</a>
 					{% else %}
 						<a href="{{ path('app_login') }}">Connexion</a>
