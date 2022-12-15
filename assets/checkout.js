@@ -1,5 +1,4 @@
 const stripe = Stripe("pk_test_51MFENWLytvbDCiqzxd1J68PIXF7y2zfUr4yTLaZ52gnFXLvMRFRbOSqJeXHLyebPGNlVq4nR4DhvEsyj0awqjy0500QsYNT1X5");
-
 var elements = stripe.elements();
 // Custom styling can be passed to options when creating an Element.
 var style = {
@@ -9,8 +8,13 @@ var style = {
     color: "#32325d",
   }
 };
+
+const apparence = {
+  theme: 'night',
+  labels: 'floating'
+};
 // Create an instance of the card Element.
-var card = elements.create('card', { style: style });
+var card = elements.create('card', apparence);
 // Add an instance of the card Element into the `card-element` <div>.
 card.mount('#card-element');
 card.addEventListener('change', function (event) {

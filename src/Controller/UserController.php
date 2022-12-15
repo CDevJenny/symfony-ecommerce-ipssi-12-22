@@ -152,24 +152,22 @@ class UserController extends AbstractController
     }
 
     #[Route('/profile/{id}/checkout={total}', name: 'app_profile_checkout')]
-    public function cartCheckout(Request $request, User $user, $total)
+    public function cartCheckout(User $user, $total)
     {
         $currentUser = $this->getUser()->getId();
         if ($currentUser !== $user->getId()) {
             return $this->redirectToRoute('app_profile', ['id' => $currentUser]);
         }
 
-        if ($request->getMethod() === 'POST') {
-            \Stripe\Stripe::setApiKey($this->getParameter('stripe_sk'));
-            \Stripe\PaymentIntent::create([
+        $stripe = new \Stripe\StripeClient($this->getParameter('stripe_sk'));
+
+        $stripe->paymentIntents->create(
+            [
                 'amount' => $total,
                 'currency' => 'eur',
-                'automatic_payment_methods' => [
-                    'enabled' => true,
-                ],
-                'source' => $request->request->get('stripeToken')
-            ]);
-        }
+                'automatic_payment_methods' => ['enabled' => true],
+            ]
+        );
 
 
         return $this->render('security/profile/checkout.html.twig');
