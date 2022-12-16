@@ -73,6 +73,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->favorites = new ArrayCollection();
     }
     
+    public function getFullName(): string
+    {
+        return $this->firstname . " " . $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

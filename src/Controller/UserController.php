@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use Error;
 use App\Entity\Cart;
+use App\Entity\CartsProducts;
 use App\Entity\User;
 use App\Form\UserType;
 use DateTimeImmutable;
 use Stripe\StripeClient;
 use App\Form\UserPasswordType;
 use App\Form\RegistrationFormType;
+use App\Repository\CartsProductsRepository;
 use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -150,6 +152,13 @@ class UserController extends AbstractController
             'total' => $totalPrice
         ]);
     }
+    #[Route('/profile/cart/item-delete/{id}', name: 'app_cart_item_delete')]
+    public function deleteCartItem(CartsProducts $cartsProducts, CartsProductsRepository $cpRepository)
+    {
+        $cpRepository->remove($cartsProducts, true);
+
+        return $this->redirectToRoute('app_profile_cart', ['id' => $this->getUser()->getId()]);
+    }
 
     #[Route('/profile/{id}/checkout={total}', name: 'app_profile_checkout')]
     public function cartCheckout(User $user, $total)
@@ -168,6 +177,7 @@ class UserController extends AbstractController
                 'automatic_payment_methods' => ['enabled' => true],
             ]
         );
+
 
 
         return $this->render('security/profile/checkout.html.twig');

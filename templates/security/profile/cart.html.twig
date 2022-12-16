@@ -12,11 +12,16 @@
 					<p>x
 						{{ cartProduct.quantity }}</p>
 					<p style="font-weight:bold"></p>
-					<p>{{ cartProduct.product.price * cartProduct.quantity }} €</p>
+					<p>{{ cartProduct.product.price * cartProduct.quantity }}
+						€</p>
+					<a href="{{ path('app_cart_item_delete', {'id': cartProduct.id }) }}">Delete</a>
 				</div>
 			{% endfor %}
 			<div class="cart-action-container">
-				<p><span>Prix total du panier : </span> {{ total }}</p>
+				<p>
+					<span>Prix total du panier :
+					</span>
+					{{ total }}</p>
 				<a href="{{ path('app_profile_checkout', {'id': app.user.id, 'total': total}) }}">Passer au paiement</a>
 			</div>
 		</div>

@@ -15,9 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductType extends AbstractType
 {
+    public function __construct(protected AuthorizationCheckerInterface $authorization)
+    {
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -38,12 +42,6 @@ class ProductType extends AbstractType
             ])
             ->add('image', TextType::class, [
                 "label" => "Image",
-                "attr" => [
-                    "class" => ""
-                ]
-            ])
-            ->add('quantity', IntegerType::class, [
-                "label" => "Quantité",
                 "attr" => [
                     "class" => ""
                 ]
@@ -72,6 +70,11 @@ class ProductType extends AbstractType
                 "label" => "Marque",
                 "choice_label" => "name"
             ]);
+        if ($this->authorization->isGranted("ROLE_USER")) {
+            $builder->add('quantity', IntegerType::class, [
+                "label" => "Quantité",
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
