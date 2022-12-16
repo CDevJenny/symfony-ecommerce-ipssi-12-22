@@ -26,6 +26,10 @@ class ContentController extends AbstractController
     #[Route('/products', name: 'app_products', methods: ['GET'])]
     public function indexProducts(ProductRepository $productRepository, Request $request, PaginatorInterface $paginator): Response
     {
+
+        $referer = $request->headers->get('referer');
+        $pathInfo = Request::create($referer)->getPathInfo();
+
         $allProducts = $productRepository->findAll();
 
         $products = $paginator->paginate(

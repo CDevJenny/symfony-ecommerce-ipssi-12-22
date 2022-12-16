@@ -80,9 +80,11 @@ class UserController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/profile/{id}', name: 'app_profile')]
-    public function indexProfile(User $user, Request $request, PaginatorInterface $paginator)
+    #[Route(path: '/profile', name: 'app_profile')]
+    public function indexProfile(Request $request, PaginatorInterface $paginator)
     {
+        /**  @var User $user **/
+        $user = $this->getUser();
         $userProducts = $user->getProducts()->toArray();
 
         $products = $paginator->paginate(
@@ -97,9 +99,11 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/{id}/update', name: 'app_user_update', methods: ['GET', 'POST'])]
-    public function updateProfile(Request $request, User $user, UserRepository $userRepository): Response
+    #[Route('/profile/update', name: 'app_user_update', methods: ['GET', 'POST'])]
+    public function updateProfile(Request $request, UserRepository $userRepository): Response
     {
+        /**  @var User $user **/
+        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -116,9 +120,11 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/{id}/password', name: 'app_user_password', methods: ['GET', 'POST'])]
-    public function updatePassword(Request $request, User $user, UserRepository $userRepository): Response
+    #[Route('/profile/password', name: 'app_user_password', methods: ['GET', 'POST'])]
+    public function updatePassword(Request $request, UserRepository $userRepository): Response
     {
+        /**  @var User $user **/
+        $user = $this->getUser();
         $form = $this->createForm(UserPasswordType::class, $user);
         $form->handleRequest($request);
 
@@ -126,7 +132,7 @@ class UserController extends AbstractController
             $user->setUpdatedAt(new DateTimeImmutable('now'));
             $userRepository->save($user, true);
 
-            return $this->redirectToRoute('app_profile', ["id" => $user->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_profile', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('security/profile/password.html.twig', [
@@ -135,9 +141,11 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/profile/{id}/cart', name: 'app_profile_cart')]
-    public function readCart(User $user)
+    #[Route(path: '/profile/cart', name: 'app_profile_cart')]
+    public function readCart()
     {
+        /**  @var User $user **/
+        $user = $this->getUser();
         $cart = $user->getCart();
         $products = $cart->getCartsProducts()->toArray();
 
@@ -160,13 +168,13 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_profile_cart', ['id' => $this->getUser()->getId()]);
     }
 
-    #[Route('/profile/{id}/checkout={total}', name: 'app_profile_checkout')]
-    public function cartCheckout(User $user, $total)
+    #[Route('/profile/checkout={total}', name: 'app_profile_checkout')]
+    public function cartCheckout($total)
     {
-        $currentUser = $this->getUser()->getId();
-        if ($currentUser !== $user->getId()) {
-            return $this->redirectToRoute('app_profile', ['id' => $currentUser]);
-        }
+        // $currentUser = $this->getUser()->getId();
+        // if ($currentUser !== $user->getId()) {
+        //     return $this->redirectToRoute('app_profile', ['id' => $currentUser]);
+        // }
 
         $stripe = new \Stripe\StripeClient($this->getParameter('stripe_sk'));
 
@@ -177,6 +185,7 @@ class UserController extends AbstractController
                 'automatic_payment_methods' => ['enabled' => true],
             ]
         );
+
 
 
 

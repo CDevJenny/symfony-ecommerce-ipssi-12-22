@@ -10,31 +10,31 @@
 				<p>
 					<span class="user-label">Nom
 					</span>
-					{{ user.lastname }}</p>
+					{{ app.user.lastname }}</p>
 				<p>
 					<span class="user-label">Prénom
 					</span>
-					{{ user.firstname }}</p>
+					{{ app.user.firstname }}</p>
 				<p>
 					<span class="user-label">Email
 					</span>
-					{{ user.email }}</p>
+					{{ app.user.email }}</p>
 				<p>
 					<span class="user-label">Pays
 					</span>
-					{{ user.country }}</p>
+					{{ app.user.country }}</p>
 				<p>
 					<span class="user-label">Adresse
 					</span>
-					{{ user.address }}</p>
+					{{ app.user.address }}</p>
 				<p>
 					<span class="user-label">Code Postal
 					</span>
-					{{ user.postalCode }}</p>
+					{{ app.user.postalCode }}</p>
 				<p>
 					<span class="user-label">Numéro de téléphone
 					</span>
-					{{ user.phoneNumber }}</p>
+					{{ app.user.phoneNumber }}</p>
 			</div>
 			<div class="user-actions">
 				<a href="{{ path('app_user_update', {'id': app.user.id}) }}">Modifier mes informations</a>
